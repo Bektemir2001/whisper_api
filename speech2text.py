@@ -3,7 +3,7 @@ import torchaudio
 import torch
 import random
 from pydub import AudioSegment
-
+import os
 
 class WhisperModel:
     def __init__(self, config, device):
