@@ -11,7 +11,8 @@ class WhisperModel:
         self.config = config
 
     def generate_text_from_audio(self, audio_file_path):
-        wav_file_path = config('UPLOAD_FOLDER') + "/" + str(randint(1000000, 9999999)) + "#" + str(randint(1000000, 999999999)) + ".wav"
+        wav_file_path = config('UPLOAD_FOLDER') + "/" + str(randint(1000000, 9999999)) + "#"
+        wav_file_path += str(randint(1000000, 9999999)) + ".wav"
         self.convert_to_wav(audio_file_path, wav_file_path)
         audio_input, _ = torchaudio.load(wav_file_name)
         if audio_input.shape[0] == 2:
@@ -28,9 +29,9 @@ class WhisperModel:
         os.remove(audio_file_path)
         return generated_text
 
-    def convert_to_wav(self, input_file, output_file):
+    @staticmethod
+    def convert_to_wav(input_file, output_file):
         audio = AudioSegment.from_file(input_file)
         audio = audio.set_channels(1).set_frame_rate(16000)
         audio = audio.set_sample_width(2)
         audio.export(output_file, format="wav")
-
