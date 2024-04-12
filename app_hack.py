@@ -26,8 +26,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 devices = config.get("devices")
 whisper_models = {}
 for device in devices:
-    models[device] = WhisperModel(config, device)
-whisper_model = WhisperModel(config, 'cuda')
+    whisper_models[device] = WhisperModel(config, device)
 
 db_config = config.get('db_conf')
 app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{db_config.get('user_name')}:{db_config.get('password')}@localhost:3306/{db_config.get('db_name')}"
