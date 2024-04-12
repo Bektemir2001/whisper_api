@@ -21,14 +21,7 @@ class WhisperModel:
             outputs = self.model.generate(**inputs)
 
         generated_text = self.processor.decode(outputs[0].to(self.device), skip_special_tokens=True)
-        print(generated_text)
         return generated_text
-        
 
-# # Example usage:
-# if __name__ == "__main__":
-#     whisper_model = WhisperModel()
-# #    generated_text = whisper_model.generate_text_from_audio("/Users/aidaizhusup/check_whisper/CHECK/n1.wav")
-# #    print(generated_text)
  
 
