@@ -1,52 +1,45 @@
+from mutagen.mp3 import MP3
+import os
+
+
 class Validator:
     error_message = ''
-    audio_file = ''
+    audio = None
     duration_limit = 0
-    
-    def __init__(self, request, audio_file, duration_limit):
+    file_path = ''
+    duration = 0
+
+    def __init__(self, request, config):
         self.request = request
-        self.audio_file = audio_file
-        self.duration_limit = duration_limit
-   
-        
+        self.duration_limit = config.get("DURATION_LIMIT")
+        self.config = config
+
     def validate(self):
-        if not self.request.is_json:
-            self.error_message = 'Invalid JSON request'
+
+        if 'audio' not in self.request.files:
+            self.error_message = f'No audio file provided.'
             return False
-        # Проверка наличия аудиофайла
-        if not self.audio_file:
-            self.error_message = 'No audio file provided.'
+
+        self.audio = self.request.files['audio']
+        if self.audio.filename.split('.')[-1].lower() != 'mp3':
+            self.error_message = f'The file must be in MP3 format.'
             return False
-        
-        # Проверка формата аудиофайла (может потребоваться добавить поддержку других форматов)
-        supported_formats = ['.wav', '.mp3']
-        if not any(self.audio_file.endswith(format) for format in supported_formats):
-            self.error_message = f'Unsupported audio format. Supported formats are: {", ".join(supported_formats)}'
+
+        self.file_path = self.config.get('UPLOAD_FOLDER') + "/" + self.audio.filename
+        self.audio.save(self.file_path)
+        audio_file = MP3(self.file_path)
+        self.duration = audio_file.info.length
+
+        if self.duration > self.duration_limit:
+            self.error_message = f'The audio file must not exceed {self.duration_limit} seconds. Your audio file {self.duration} seconds'
+            os.remove(self.file_path)
             return False
-        
-        # Проверка длительности аудиофайла
-        audio_duration = self.get_audio_duration()
-        if audio_duration > self.duration_limit:
-            self.error_message = f'Audio duration exceeds the limit of {self.duration_limit} seconds.'
-            return False
-        
-        # Дополнительные проверки, если необходимо
-        
-        # Если все проверки пройдены успешно, возвращаем True
         return True
-    
+
     def get_error_message(self):
         return self.error_message
     
     def get_audio_file(self):
-        return self.audio_file
-    
-    def get_audio_duration(self):
-        # Здесь можно использовать библиотеку для работы с аудиофайлами, чтобы получить его длительность
-        # Например, для файлов в формате WAV:
-        import wave
-        with wave.open(self.audio_file, 'rb') as audio:
-            frames = audio.getnframes()
-            rate = audio.getframerate()
-            duration = frames / float(rate)
-        return duration
+        return self.file_path
+    def get_duration(self):
+        return self.duration
