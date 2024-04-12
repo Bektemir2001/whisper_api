@@ -69,10 +69,9 @@ def receive_data():
             print(valid_query.get_audio_file())
             text = whisper_models[g.user.device].generate_text_from_audio(valid_query.get_audio_file())
             new_query.duration = valid_query.get_duration()
-            new_query.status = config.get
+            new_query.status = config.get('SUCCESS_STATUS')
             db.session.add(new_query)
             db.session.commit()
-
             response_data = {"text": text}
             return jsonify(response_data), 200
         else:
@@ -80,6 +79,7 @@ def receive_data():
     except Exception as e:
         error_message = str(e)
         new_query.error_message = error_message
+        new_query.status = config.get('ERROR_STATUS')
         db.session.add(new_query)
         db.session.commit()
         return jsonify({"error": error_message}), 500
