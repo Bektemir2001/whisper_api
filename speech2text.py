@@ -11,7 +11,7 @@ class WhisperModel:
         self.config = config
 
     def generate_text_from_audio(self, audio_file_path):
-        wav_file_path = config('UPLOAD_FOLDER') + "/" + str(randint(1000000, 9999999)) + "#"
+        wav_file_path = self.config('UPLOAD_FOLDER') + "/" + str(randint(1000000, 9999999)) + "#"
         wav_file_path += str(randint(1000000, 9999999)) + ".wav"
         self.convert_to_wav(audio_file_path, wav_file_path)
         audio_input, _ = torchaudio.load(wav_file_name)
