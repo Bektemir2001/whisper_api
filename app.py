@@ -96,5 +96,10 @@ def check_cache():
     return jsonify(cache_values)
 
 
+@app.route('/')
+def index():
+    return "Welcome to Whisper's API"
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
