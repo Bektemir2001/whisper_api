@@ -1,7 +1,7 @@
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import torchaudio
 import torch
-
+import random
 
 class WhisperModel:
     def __init__(self, config, device):
@@ -11,8 +11,8 @@ class WhisperModel:
         self.config = config
 
     def generate_text_from_audio(self, audio_file_path):
-        wav_file_path = self.config.get('UPLOAD_FOLDER') + "/" + str(randint(1000000, 9999999)) + "#"
-        wav_file_path += str(randint(1000000, 9999999)) + ".wav"
+        wav_file_path = self.config.get('UPLOAD_FOLDER') + "/" + str(random.randint(1000000, 9999999)) + "#"
+        wav_file_path += str(random.randint(1000000, 9999999)) + ".wav"
         self.convert_to_wav(audio_file_path, wav_file_path)
         audio_input, _ = torchaudio.load(wav_file_name)
         if audio_input.shape[0] == 2:
