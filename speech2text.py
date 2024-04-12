@@ -16,7 +16,7 @@ class WhisperModel:
         wav_file_path = self.config.get('UPLOAD_FOLDER') + "/" + str(random.randint(1000000, 9999999)) + "#"
         wav_file_path += str(random.randint(1000000, 9999999)) + ".wav"
         self.convert_to_wav(audio_file_path, wav_file_path)
-        audio_input, _ = torchaudio.load(wav_file_name)
+        audio_input, _ = torchaudio.load(wav_file_path)
         if audio_input.shape[0] == 2:
             audio_input = audio_input.mean(dim=0, keepdim=True)
 
