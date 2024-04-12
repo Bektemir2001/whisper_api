@@ -3,7 +3,6 @@ from werkzeug.utils import secure_filename
 from speech2text import WhisperModel
 import os
 from functools import wraps
-from pydub import AudioSegment
 import json
 from Validator import Validator
 from models.entities.User import User

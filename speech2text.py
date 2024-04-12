@@ -2,6 +2,8 @@ from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import torchaudio
 import torch
 import random
+from pydub import AudioSegment
+
 
 class WhisperModel:
     def __init__(self, config, device):
