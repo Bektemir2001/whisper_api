@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify, send_file, g
+from flask import Flask, request, jsonify, send_file, g, abort
 from werkzeug.utils import secure_filename
 from speech2text import WhisperModel
 import os
+from functools import wraps
 from pydub import AudioSegment
 import json
 from Validator import Validator
@@ -35,35 +36,34 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 
-def auth():
-    token = request.headers.get('Authorization')
-    if not token or not token.startswith('Bearer '):
-        raise Unauthorized('Invalid token')
+def require_auth(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.headers.get('Authorization')
+        if not token or not token.startswith('Bearer '):
+            raise Unauthorized('Invalid token')
 
-    token = token[len('Bearer '):]
-    user = cache.get(token)
-    if user is None:
-        user = User.query.filter(User.token == token).first()
-        if user is not None:
-            cache.set(token, user)
+        token = token[len('Bearer '):]
+        user = cache.get(token)
+        if user is None:
+            user = User.query.filter(User.token == token).first()
+            if user is not None:
+                cache.set(token, user)
 
-    if user is None:
-        raise Unauthorized('Incorrect token')
-    if not user.has_access:
-        raise Unauthorized('Unauthorized')
-    g.user = user
+        if user is None:
+            raise Unauthorized('Incorrect token')
+        if not user.has_access:
+            raise Unauthorized('Unauthorized')
 
+        g.user = user
+        return f(*args, **kwargs)
 
-# @app.before_request
-# def before_request():
-#     return auth()
+    return decorated_function
 
 
 @app.route('/api/receive_data', methods=['POST'])
+@require_auth
 def receive_data():
-    auth_response = auth()
-    if not isinstance(auth_response, tuple) or auth_response[1] != 200:
-        return auth_response
     current_utc_time = datetime.utcnow()
     new_query = Query(user_id=g.user.id, duration=0, date=current_utc_time.replace(tzinfo=pytz.utc).astimezone(kyrgyzstan_timezone))
     try:
