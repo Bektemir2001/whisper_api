@@ -54,13 +54,16 @@ def auth():
     g.user = user
 
 
-@app.before_request
-def before_request():
-    return auth()
+# @app.before_request
+# def before_request():
+#     return auth()
 
 
 @app.route('/api/receive_data', methods=['POST'])
 def receive_data():
+    auth_response = auth()
+    if not isinstance(auth_response, tuple) or auth_response[1] != 200:
+        return auth_response
     current_utc_time = datetime.utcnow()
     new_query = Query(user_id=g.user.id, duration=0, date=current_utc_time.replace(tzinfo=pytz.utc).astimezone(kyrgyzstan_timezone))
     try:
