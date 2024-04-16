@@ -21,7 +21,7 @@ with open('./config.json', 'r') as config_file:
 kyrgyzstan_timezone = pytz.timezone('Asia/Bishkek')
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, supports_credentials=True)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 devices = config.get("devices")
 whisper_models = {}
@@ -77,11 +77,9 @@ def receive_data():
             response_data = {"text": text}
 
             response = make_response(jsonify(response_data), 200)
-            response.headers['Access-Control-Allow-Origin'] = '*'
             return response
         else:
             response = make_response(jsonify({"error": valid_query.get_error_message()}), 401)
-            response.headers['Access-Control-Allow-Origin'] = '*'
             return response
     except Exception as e:
         error_message = str(e)
@@ -90,7 +88,6 @@ def receive_data():
         db.session.add(new_query)
         db.session.commit()
         response = make_response(jsonify({"error": error_message}), 500)
-        response.headers['Access-Control-Allow-Origin'] = '*'
         return response
 
         
