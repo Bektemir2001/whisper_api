@@ -21,7 +21,7 @@ with open('./config.json', 'r') as config_file:
 kyrgyzstan_timezone = pytz.timezone('Asia/Bishkek')
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app)
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 devices = config.get("devices")
 whisper_models = {}
