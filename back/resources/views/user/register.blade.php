@@ -13,6 +13,11 @@
 </head>
 <body>
 <div class="bg-white border rounded-lg px-8 py-6 mx-auto my-8 max-w-2xl">
+    @if(session('notification'))
+        <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            Done
+        </div>
+    @endif
     <h2 class="text-2xl font-medium mb-4">Каттоо</h2>
     <form action="{{route('register')}}" method="POST">
         @csrf
@@ -81,7 +86,7 @@
                             Токен
                         </th>
                         <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                            device
+                            action
                         </th>
 
                     </tr>
@@ -100,7 +105,7 @@
                                 {{$user->token}}
                             </td>
                             <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                {{$user->device}}
+                                <a href="{{route('sendMail', $user->id)}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">send to mail</a>
                             </td>
                         </tr>
                     @endforeach

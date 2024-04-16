@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Mail\SendMessageMail;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -45,5 +47,12 @@ class UserController extends Controller
         $part2 = hash('sha256', $salt2 . $randomString);
 
         return $part1 . $part2;
+    }
+
+    public function sendMail($id)
+    {
+        $user = DB::table('users')->where('id', $id)->first();
+        Mail::to($user->email)->send(new SendMessageMail($user));
+        return redirect()->route('home')->with(['notification' => 'done']);
     }
 }
