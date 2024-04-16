@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file, g, abort
+from flask import Flask, request, jsonify, send_file, g, abort, make_response
 from werkzeug.utils import secure_filename
 from speech2text import WhisperModel
 import os
@@ -75,16 +75,23 @@ def receive_data():
             db.session.add(new_query)
             db.session.commit()
             response_data = {"text": text}
-            return jsonify(response_data), 200
+
+            response = make_response(jsonify(response_data), 200)
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            return response
         else:
-            return jsonify({"error": valid_query.get_error_message()}), 401
+            response = make_response(jsonify({"error": valid_query.get_error_message()}), 401)
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            return response
     except Exception as e:
         error_message = str(e)
         new_query.error_message = error_message
         new_query.status = config.get('ERROR_STATUS')
         db.session.add(new_query)
         db.session.commit()
-        return jsonify({"error": error_message}), 500
+        response = make_response(jsonify({"error": error_message}), 500)
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
 
         
 @app.route('/check_cache')
