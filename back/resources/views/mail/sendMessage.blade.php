@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-    <title>TTS API</title>
+    <title>ASR Registration</title>
 </head>
 <body>
 <section class="py-1 bg-blueGray-50">
@@ -17,19 +17,71 @@
             <div class="rounded-t mb-0 px-4 py-3 border-0">
                 <div class="flex flex-wrap items-center">
                     <div class="relative w-full px-4 max-w-full flex-grow flex-1">
-                       
+
                     </div>
 
                 </div>
             </div>
 
             <div class="block w-full overflow-x-auto">
-                <h5>Урматтуу хакатон катышуучулары, TTS(текстен кепке) тин API -> :</h5>  <span><h1 class="text-blue-600">http://tts.ulut.kg/api/tts</h1></span>
-                
-				<h5>А токени болсо, силерге ASR(кептеп тексте) үчүн берилген токенди колдоносуздар, аны биз сиздердин почтаңызга жибергенбиз.</h5>
-				<h5>Видео аркылуу TTS-ти кантип туура колдонууну көрө аласыздар. Ийгилик!</h5>
+                <table class="items-center bg-transparent w-full border-collapse ">
+                    <thead>
+                    <tr>
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                        </th>
+                        <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
 
-				<h5>Видео инструкция : <a class="text-blue-500" href="https://youtu.be/Xe6RXSXYbqc">https://youtu.be/Xe6RXSXYbqc</a>  </h5>  
+                        </th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                            Команданын аталышы
+                        </th>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                            {{$user->name}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                            token
+                        </th>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                            {{$user->token}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                            API
+                        </th>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                            https://asr.ulut.kg/api/receive_data
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                            method
+                        </th>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                            POST
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
+                            видео инструкция
+                        </th>
+                        <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                            <a href="https://www.youtube.com/watch?v=bfZWTS7bcus&t=45s">https://www.youtube.com/watch?v=bfZWTS7bcus&t=45s</a>
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+
+                </table>
             </div>
         </div>
     </div>
